@@ -1,9 +1,12 @@
 from re import template
-from fastapi import FastAPI, WebSocket
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, WebSocket, Request
 import serial
 from fastapi.responses import HTMLResponse
 from jinja2 import Environment, FileSystemLoader
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+import socket
+
 
 ser = serial.Serial('COM10', baudrate=115200, timeout=1)
 app = FastAPI()
@@ -14,17 +17,18 @@ templates = Environment(
     autoescape=False
 )
 
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
-@app.get("/")
-async def index(name: str = "World"):
-    template = templates.get_template("index.html")
-    content = template.render(name=name)
-    return HTMLResponse(content)
+
+templates = Jinja2Templates(directory="templates")
 
 
 @app.get("/")
-async def get(request):
-    return templates.TemplateResponse('index.html', {"request": request})
+async def read_item(request: Request):
+    host_name = socket.gethostname()
+    host_ip = socket.gethostbyname(host_name)
+    context = {'request': request, "host_ip": host_ip}
+    return templates.TemplateResponse("index.html", context=context)
 
 
 @app.websocket("/ws")

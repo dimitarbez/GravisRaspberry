@@ -52,7 +52,7 @@
 			</div>
 		</div>
 		<script>
-			var ws = new WebSocket("ws://localhost:8000/ws");
+			var ws = new WebSocket("ws://{{host_ip}}:8000/ws");
 
 			function sendMessage(msg) {
 				ws.send(msg);
