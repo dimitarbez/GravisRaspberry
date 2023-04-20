@@ -2,6 +2,9 @@ from time import sleep
 from pynput import keyboard
 import serial
 import threading
+import pyrplidar
+import math
+import numpy as np
 
 
 import cv2 as cv
@@ -152,10 +155,52 @@ def robot_drive_code():
     listener.start()
 
 
+def lidar_code():
+    lidar = pyrplidar.RPLidar('/dev/ttyUSB1')
+    lidar.set_motor_pwm(800)
+    lidar.start_motor()
+    lidar.start_scan()
+
+    cv.namedWindow("Lidar", cv.WINDOW_NORMAL)
+    cv.resizeWindow("Lidar", 800, 800)
+
+    for data in lidar.iter_scans():
+      # Convert the data to a numpy array
+        data = np.array(data)
+
+        # Convert the angle to radians
+        angles = data[:, 1] * math.pi / 180
+
+        # Convert the distance to x,y coordinates
+        x = data[:, 2] * np.cos(angles)
+        y = data[:, 2] * np.sin(angles)
+
+        # Create a black image to draw the lidar data on
+        img = np.zeros((800, 800, 3), np.uint8)
+
+        # Draw the lidar data as points on the image
+        for i in range(len(x)):
+            cv.circle(img, (int(x[i] * 20) + 400,
+                      int(y[i] * 20) + 400), 1, (255, 255, 255), -1)
+
+        # Display the lidar data in the OpenCV window
+        cv.imshow("Lidar", img)
+
+        # Wait for a key press and exit if 'q' is pressed
+        if cv.waitKey(1) & 0xFF == ord('q'):
+
+            lidar.stop_motor()
+            lidar.stop_scan()
+            lidar.disconnect()
+            break
+
+
 if __name__ == "__main__":
 
     thread_robot_control = threading.Thread(target=robot_drive_code)
     thread_opencv = threading.Thread(target=opencv_code)
+    thread_lidar = threading.Thread(target=lidar_code)
 
+    thread_lidar.start()
     thread_opencv.start()
     thread_robot_control.start()
