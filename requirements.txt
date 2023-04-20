@@ -1,9 +1,5 @@
 numpy==1.21.6
-opencv-python==4.7.0.72
+opencv-contrib-python==4.7.0.72
 pynput==1.7.6
-pyobjc-core==9.1.1
-pyobjc-framework-ApplicationServices==9.1.1
-pyobjc-framework-Cocoa==9.1.1
-pyobjc-framework-Quartz==9.1.1
+pyrplidar==0.1.2
 pyserial==3.5
-six==1.16.0
