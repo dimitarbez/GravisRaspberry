@@ -171,10 +171,14 @@ def lidar_code():
     cv.resizeWindow("RPLidar", 800, 800)
     frame = 255 * np.ones((800, 800, 3), dtype=np.uint8)
 
-    # Draw the lidar points in the OpenCV window
+   # Draw the lidar points in the OpenCV window
     for count, scan in enumerate(scan_generator()):
-        print(count, scan)
-        if count == 20: break
+        for item in scan:
+            x = int(item['distance'] * np.cos(np.radians(item['angle'])))
+            y = int(item['distance'] * np.sin(np.radians(item['angle'])))
+            cv.circle(frame, (400 + x, 400 + y), 2, (0, 255, 0), -1)
+        cv.imshow("RPLidar", frame)
+        cv.waitKey(1)
 
     lidar.stop()
     lidar.set_motor_pwm(0)
