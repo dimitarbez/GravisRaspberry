@@ -182,6 +182,10 @@ def lidar_code():
             cv.imshow("RPLidar", frame)
             cv.waitKey(1)
 
+        if count % 100 == 0:
+            frame = 255 * np.zeros((400, 400, 3), dtype=np.uint8)
+
+
     lidar.stop()
     lidar.set_motor_pwm(0)
     lidar.disconnect()
