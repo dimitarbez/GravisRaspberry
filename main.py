@@ -112,7 +112,7 @@ def opencv_code():
     # give camera time to warm up
     sleep(0.1)
 
-    for still in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True, resize=(400, 300)):
+    for still in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
       # take the frame as an array, convert it to black and white, and look for facial features
         image = still.array
 
@@ -123,21 +123,13 @@ def opencv_code():
             scaleFactor=1.1,
             minNeighbors=5,
             minSize=(30, 30),
-            flags=cv.CASCADE_SCALE_IMAGE
         )
 
         if len(faces) == 0:
             continue
-        
-        face = faces[0]
 
-        face_x = face[0]
-        face_y = face[1]
-        face_width = face[2]
-        face_height = face[3]
-
-        cv.rectangle(image, (face_x, face_y), (face_x+face_width,
-                     face_y+face_height), tracked_face_color, 2)
+        for (x, y, w, h) in faces:
+            cv.rectangle(image, (x, y), (x+w, y+h), tracked_face_color, 2)
 
         # display the resulting image
         cv.imshow("Display", image)
