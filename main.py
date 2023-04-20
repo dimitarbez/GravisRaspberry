@@ -2,7 +2,7 @@ from time import sleep
 from pynput import keyboard
 import serial
 import threading
-import pyrplidar
+from pyrplidar import PyRPlidar
 import math
 import numpy as np
 
@@ -156,7 +156,9 @@ def robot_drive_code():
 
 
 def lidar_code():
-    lidar = pyrplidar.RPLidar('/dev/ttyUSB1')
+
+    lidar = PyRPlidar()
+    lidar.connect(port="/dev/ttyUSB1", baudrate=256000, timeout=3)
     lidar.set_motor_pwm(800)
     lidar.start_motor()
     lidar.start_scan()
@@ -165,7 +167,7 @@ def lidar_code():
     cv.resizeWindow("Lidar", 800, 800)
 
     for data in lidar.iter_scans():
-      # Convert the data to a numpy array
+        # Convert the data to a numpy array
         data = np.array(data)
 
         # Convert the angle to radians
