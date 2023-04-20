@@ -5,7 +5,6 @@ import serial
 
 import cv2 as cv
 from face_tracker.face_tracker import FaceTracker
-from motor_controller.motor_speed_calculator import MotorSpeedCalculator
 
 # if using the picamera, import those libraries as well
 from picamera.array import PiRGBArray
@@ -138,7 +137,7 @@ if __name__ == "__main__":
     listener.start()
 
     # give camera time to warm up
-    time.sleep(0.1)
+    sleep(0.1)
 
     face_tracker = FaceTracker()
 
@@ -166,18 +165,11 @@ if __name__ == "__main__":
 
         # within the left region
         if object_in_left_area and not object_in_right_area:
-            # interpolate motor speed from left side border to left edge of screen
-            left_motorspeed = MotorSpeedCalculator.calculate_left_motor_speed(
-                face_x, face_tracker.rotation_region_size)
 
             print('left')
 
         # within the right region
         elif object_in_right_area and not object_in_left_area:
-            # interpolate motor speed from right side border to right edge of screen
-            right_motorspeed = MotorSpeedCalculator.calculate_right_motor_speed(
-                face_x, face_width, image.shape[1])
-
             print('right')
 
         elif (object_in_left_area and object_in_right_area) or not (object_in_left_area and object_in_right_area):
