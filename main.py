@@ -176,7 +176,7 @@ def lidar_code():
         for (_, angle, distance) in scan:
             x = int(distance * np.cos(np.radians(angle)))
             y = int(distance * np.sin(np.radians(angle)))
-            cv2.circle(frame, (400 + x, 400 + y), 2, (0, 255, 0), -1)
+            cv.circle(frame, (400 + x, 400 + y), 2, (0, 255, 0), -1)
         cv.imshow("RPLidar", frame)
         cv.waitKey(1)
 
