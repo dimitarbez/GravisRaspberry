@@ -17,9 +17,9 @@ faceCascade = cv.CascadeClassifier(cascPath)
 
 # #start the camera and define settings
 camera = PiCamera()
-camera.resolution = (400, 300)  # a smaller resolution means faster processing
-camera.framerate = 32
-rawCapture = PiRGBArray(camera, size=(400, 300))
+camera.resolution = (400, 304)  # a smaller resolution means faster processing
+camera.framerate = 24
+rawCapture = PiRGBArray(camera, size=(400, 304))
 
 # set the distance between the edge of the screen
 # and the borders that trigger robot rotation
