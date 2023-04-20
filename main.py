@@ -159,42 +159,14 @@ def lidar_code():
 
     lidar = PyRPlidar()
     lidar.connect(port="/dev/ttyUSB1", baudrate=256000, timeout=3)
-    lidar.set_motor_pwm(800)
-    lidar.start_motor()
-    lidar.start_scan()
 
-    cv.namedWindow("Lidar", cv.WINDOW_NORMAL)
-    cv.resizeWindow("Lidar", 800, 800)
+    lidar.set_motor_pwm(500)
+    sleep(2)
 
-    for data in lidar.iter_scans():
-        # Convert the data to a numpy array
-        data = np.array(data)
+    scan_generator = lidar.force_scan()
 
-        # Convert the angle to radians
-        angles = data[:, 1] * math.pi / 180
-
-        # Convert the distance to x,y coordinates
-        x = data[:, 2] * np.cos(angles)
-        y = data[:, 2] * np.sin(angles)
-
-        # Create a black image to draw the lidar data on
-        img = np.zeros((800, 800, 3), np.uint8)
-
-        # Draw the lidar data as points on the image
-        for i in range(len(x)):
-            cv.circle(img, (int(x[i] * 20) + 400,
-                      int(y[i] * 20) + 400), 1, (255, 255, 255), -1)
-
-        # Display the lidar data in the OpenCV window
-        cv.imshow("Lidar", img)
-
-        # Wait for a key press and exit if 'q' is pressed
-        if cv.waitKey(1) & 0xFF == ord('q'):
-
-            lidar.stop_motor()
-            lidar.stop_scan()
-            lidar.disconnect()
-            break
+    for count, scan in enumerate(scan_generator()):
+        print(count, scan)
 
 
 if __name__ == "__main__":
