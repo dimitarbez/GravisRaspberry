@@ -118,6 +118,19 @@ def opencv_code():
       # take the frame as an array, convert it to black and white, and look for facial features
         image = still.array
 
+        gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+
+        face = face_tracker.get_face_from_image(gray, faceCascade)
+        if len(face) == 0:
+            continue
+
+        face_x = face[0]
+        face_y = face[1]
+        face_width = face[2]
+        face_height = face[3]
+
+        cv.rectangle(image, (face_x, face_y), (face_x+face_width, face_y+face_height), tracked_face_color, 2)
+
         # display the resulting image
         cv.imshow("Display", image)
 
