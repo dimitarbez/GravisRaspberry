@@ -17,7 +17,7 @@ faceCascade = cv.CascadeClassifier(cascPath)
 
 # #start the camera and define settings
 camera = PiCamera()
-camera.resolution = (400, 300)  # a smaller resolution means faster processing
+camera.resolution = (640, 480)  # a smaller resolution means faster processing
 camera.framerate = 24
 rawCapture = PiRGBArray(camera, size=camera.resolution)
 
@@ -62,15 +62,23 @@ def on_press(key):
 
         elif key.char == ('1'):
             print('sent')
-            ser.write('motor:speed:80\n'.encode())
+            ser.write('motor:speed:50\n'.encode())
 
         elif key.char == ('2'):
             print('sent')
-            ser.write('motor:speed:120\n'.encode())
+            ser.write('motor:speed:100\n'.encode())
 
         elif key.char == ('3'):
             print('sent')
             ser.write('motor:speed:150\n'.encode())
+
+        elif key.char == ('4'):
+            print('sent')
+            ser.write('motor:speed:200\n'.encode())
+
+        elif key.char == ('5'):
+            print('sent')
+            ser.write('motor:speed:255\n'.encode())
 
         elif key.char == ('p'):
             print('sent')
@@ -81,7 +89,7 @@ def on_press(key):
             ser.write('servo:armheight:90\n'.encode())
 
         elif key.char == ('l'):
-            
+
             global is_light_on
 
             if is_light_on:
@@ -120,20 +128,6 @@ def opencv_code():
     for still in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True, resize=camera.resolution):
       # take the frame as an array, convert it to black and white, and look for facial features
         image = still.array
-
-        gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-
-        face = face_tracker.get_face_from_image(gray, faceCascade)
-        if len(face) == 0:
-            continue
-
-        face_x = face[0]
-        face_y = face[1]
-        face_width = face[2]
-        face_height = face[3]
-
-        cv.rectangle(image, (face_x, face_y), (face_x+face_width,
-                     face_y+face_height), tracked_face_color, 2)
 
         # display the resulting image
         cv.imshow("Display", image)
