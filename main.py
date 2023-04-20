@@ -112,17 +112,24 @@ def opencv_code():
     # give camera time to warm up
     sleep(0.1)
 
-    face_tracker = FaceTracker()
-
     for still in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True, resize=(400, 300)):
       # take the frame as an array, convert it to black and white, and look for facial features
         image = still.array
 
         gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
 
-        face = face_tracker.get_face_from_image(gray, faceCascade)
-        if len(face) == 0:
+        faces = faceCascade.detectMultiScale(
+            gray,
+            scaleFactor=1.1,
+            minNeighbors=5,
+            minSize=(30, 30),
+            flags=cv.CASCADE_SCALE_IMAGE
+        )
+
+        if len(faces) == 0:
             continue
+        
+        face = faces[0]
 
         face_x = face[0]
         face_y = face[1]
