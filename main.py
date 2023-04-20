@@ -175,7 +175,7 @@ def lidar_code():
     for count, scan in enumerate(scan_generator()):
         x = int(scan.distance * np.cos(np.radians(scan.angle)))
         y = int(scan.distance * np.sin(np.radians(scan.angle)))
-        cv.circle(frame, (200 + x, 200 + y), 2, (0, 255, 0), -1)
+        cv.circle(frame, (int(x/10) + 200, int(y/10) + 200), 2, (0, 255, 0), -1)
 
         # Display the frame
         if count % 10 == 0:
