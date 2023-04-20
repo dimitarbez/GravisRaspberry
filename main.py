@@ -158,15 +158,27 @@ def robot_drive_code():
 def lidar_code():
 
     lidar = PyRPlidar()
-    lidar.connect(port="/dev/ttyUSB1", baudrate=256000, timeout=3)
 
-    lidar.set_motor_pwm(500)
-    sleep(2)
+    lidar.connect(port="/dev/ttyUSB1", baudrate=115200, timeout=3)
 
-    scan_generator = lidar.force_scan()
+    info = lidar.get_device_info()
+    print(info)
 
-    for count, scan in enumerate(scan_generator()):
+    health = lidar.get_device_health()
+    print(health)
+
+    lidar.start_motor()
+
+    lidar.start_scan()
+    for count, scan in enumerate(lidar.iter_scans()):
         print(count, scan)
+        if count == 20:
+            break
+
+    lidar.stop_scan()
+    lidar.stop_motor()
+
+    lidar.disconnect()
 
 
 if __name__ == "__main__":
