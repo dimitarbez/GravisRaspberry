@@ -189,11 +189,8 @@ def opencv_code():
             break
 
 
-
-
-if __name__ == "__main__":
-
-    # Collect events until released
+def robot_drive_code():
+        # Collect events until released
     with keyboard.Listener(
             on_press=on_press,
             on_release=on_release) as listener:
@@ -206,8 +203,13 @@ if __name__ == "__main__":
     listener.start()
 
 
+
+
+if __name__ == "__main__":
+
+
+    thread_robot_control = threading.Thread(target=robot_drive_code)
     thread_opencv = threading.Thread(target=opencv_code)
+  
     thread_opencv.start()
-
-
-    
+    thread_robot_control.start()
