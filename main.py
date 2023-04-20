@@ -161,19 +161,18 @@ def lidar_code():
 
     lidar.connect(port="/dev/ttyUSB1", baudrate=115200, timeout=3)
 
-    info = lidar.get_info()
-    print("info :", info)
+    lidar.set_motor_pwm(500)
+    sleep(2)
 
-    health = lidar.get_health()
-    print("health :", health)
+    scan_generator = lidar.start_scan_express(4)
 
-    samplerate = lidar.get_samplerate()
-    print("samplerate :", samplerate)
+    for count, scan in enumerate(scan_generator()):
+        print(count, scan)
+        if count == 20:
+            break
 
-    scan_modes = lidar.get_scan_modes()
-    print("scan modes :")
-    for scan_mode in scan_modes:
-        print(scan_mode)
+    lidar.stop()
+    lidar.set_motor_pwm(0)
 
     lidar.disconnect()
 
