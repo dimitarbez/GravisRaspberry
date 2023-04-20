@@ -1,6 +1,7 @@
 from time import sleep
 from pynput import keyboard
 import serial
+import threading
 
 
 import cv2 as cv
@@ -34,7 +35,7 @@ tracked_face_color = (0, 255, 0)
 side_border_color = (0, 0, 255)
 
 
-ser = serial.Serial('COM10', baudrate=115200, timeout=1)
+ser = serial.Serial('/dev/ttyUSB0', baudrate=115200, timeout=1)
 
 
 def on_press(key):
@@ -120,22 +121,9 @@ def on_release(key):
     if key == keyboard.Key.esc:
         # Stop listener
         return False
+    
 
-
-if __name__ == "__main__":
-
-    # Collect events until released
-    with keyboard.Listener(
-            on_press=on_press,
-            on_release=on_release) as listener:
-        listener.join()
-
-    # ...or, in a non-blocking fashion:
-    listener = keyboard.Listener(
-        on_press=on_press,
-        on_release=on_release)
-    listener.start()
-
+def opencv_code():
     # give camera time to warm up
     sleep(0.1)
 
@@ -199,3 +187,27 @@ if __name__ == "__main__":
         key = cv.waitKey(1) & 0xFF
         if key == ord("q"):
             break
+
+
+
+
+if __name__ == "__main__":
+
+    # Collect events until released
+    with keyboard.Listener(
+            on_press=on_press,
+            on_release=on_release) as listener:
+        listener.join()
+
+    # ...or, in a non-blocking fashion:
+    listener = keyboard.Listener(
+        on_press=on_press,
+        on_release=on_release)
+    listener.start()
+
+
+    thread_opencv = threading.Thread(target=opencv_code)
+    thread_opencv.start()
+
+
+    
