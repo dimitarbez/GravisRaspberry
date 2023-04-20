@@ -19,7 +19,7 @@ faceCascade = cv.CascadeClassifier(cascPath)
 camera = PiCamera()
 camera.resolution = (400, 300)  # a smaller resolution means faster processing
 camera.framerate = 24
-rawCapture = PiRGBArray(camera, size=(400, 300))
+rawCapture = PiRGBArray(camera, size=camera.resolution)
 
 # set the distance between the edge of the screen
 # and the borders that trigger robot rotation
@@ -81,6 +81,9 @@ def on_press(key):
             ser.write('servo:armheight:90\n'.encode())
 
         elif key.char == ('l'):
+            
+            global is_light_on
+
             if is_light_on:
                 ser.write('lights:front:0:0:0')
                 ser.write('lights:front:0:0:0')
@@ -114,7 +117,7 @@ def opencv_code():
 
     face_tracker = FaceTracker()
 
-    for still in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True, resize=(400, 300)):
+    for still in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True, resize=camera.resolution):
       # take the frame as an array, convert it to black and white, and look for facial features
         image = still.array
 
