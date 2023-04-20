@@ -85,11 +85,11 @@ def on_press(key):
             global is_light_on
 
             if is_light_on:
-                ser.write('lights:front:0:0:0')
-                ser.write('lights:front:0:0:0')
+                ser.write('lights:front:0:0:0\n'.encode())
+                ser.write('lights:back:0:0:0\n'.encode())
             if not is_light_on:
-                ser.write('lights:front:255:255:255')
-                ser.write('lights:front:255:0:0')
+                ser.write('lights:front:255:255:255\n'.encode())
+                ser.write('lights:back:255:0:0\n'.encode())
 
             is_light_on = not is_light_on
 
