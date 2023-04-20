@@ -5,7 +5,6 @@ import threading
 
 
 import cv2 as cv
-from face_tracker.face_tracker import FaceTracker
 
 # if using the picamera, import those libraries as well
 from picamera.array import PiRGBArray
@@ -122,8 +121,6 @@ def on_release(key):
 def opencv_code():
     # give camera time to warm up
     sleep(0.1)
-
-    face_tracker = FaceTracker()
 
     for still in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True, resize=camera.resolution):
       # take the frame as an array, convert it to black and white, and look for facial features
