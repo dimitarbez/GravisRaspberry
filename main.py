@@ -173,29 +173,29 @@ def lidar_code():
     cv.resizeWindow("RPLidar", 400, 400)
     frame = 255 * np.zeros((400, 400, 3), dtype=np.uint8)
 
-    scan_generator = lidar.start_scan_express(4)
-    sleep(0.5)
-    
-    for count, scan in enumerate(scan_generator()):
-        print(scan)
-        x = int(scan.distance * np.cos(np.radians(scan.angle)))
-        y = int(scan.distance * np.sin(np.radians(scan.angle)))
-        cv.circle(frame, (int(x/10) + 200, int(y/10) + 200),
-                  2, (0, 255, 0), -1)
 
-        # Display the frame
-        if count % 10 == 0:
-            cv.imshow("RPLidar", frame)
-            cv.waitKey(1)
+    while True:
+        scan_generator = lidar.start_scan_express(4)
+        sleep(0.5)
+        for count, scan in enumerate(scan_generator()):
+            print(scan)
+            x = int(scan.distance * np.cos(np.radians(scan.angle)))
+            y = int(scan.distance * np.sin(np.radians(scan.angle)))
+            cv.circle(frame, (int(x/10) + 200, int(y/10) + 200),
+                    2, (0, 255, 0), -1)
 
-        if count % 2000 == 0:
-            frame = 255 * np.zeros((400, 400, 3), dtype=np.uint8)
+            # Display the frame
+            if count % 10 == 0:
+                cv.imshow("RPLidar", frame)
+                cv.waitKey(1)
 
-        if count % 5000 == 0:
-            break
+            if count % 2000 == 0:
+                frame = 255 * np.zeros((400, 400, 3), dtype=np.uint8)
 
-    lidar.set_motor_pwm(0)
-    lidar.stop()
+            if count > 5000:
+                break
+
+        lidar.stop()
     lidar.disconnect()
 
     #cv.destroyAllWindows()
