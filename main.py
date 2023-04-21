@@ -175,7 +175,7 @@ def lidar_code():
 
     while True:
         scan_generator = lidar.start_scan_express(4)
-        sleep(0.5)
+        sleep(2)
         for count, scan in enumerate(scan_generator()):
             x = int(scan.distance * np.cos(np.radians(scan.angle)))
             y = int(scan.distance * np.sin(np.radians(scan.angle)))
@@ -194,6 +194,7 @@ def lidar_code():
                 break
 
         lidar.stop()
+        sleep(0.5)
 
     lidar.disconnect()
 
