@@ -159,9 +159,7 @@ def lidar_code():
 
     lidar = PyRPlidar()
 
-    lidar.connect(port="/dev/ttyUSB1", baudrate=115200, timeout=3)
 
-    lidar.set_motor_pwm(500)
     sleep(2)
 
     print(lidar.get_health())
@@ -175,6 +173,8 @@ def lidar_code():
 
 
     while True:
+        lidar.connect(port="/dev/ttyUSB1", baudrate=115200, timeout=3)
+        lidar.set_motor_pwm(500)
         scan_generator = lidar.start_scan_express(4)
         sleep(0.5)
         for count, scan in enumerate(scan_generator()):
@@ -192,11 +192,13 @@ def lidar_code():
             if count % 2000 == 0:
                 frame = 255 * np.zeros((400, 400, 3), dtype=np.uint8)
 
-            if count > 5000:
+            if count > 4000:
                 break
 
+        lidar.set_motor_pwm(500)
         lidar.stop()
-    lidar.disconnect()
+        lidar.disconnect()
+        sleep(2)
 
     #cv.destroyAllWindows()
 
