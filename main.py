@@ -192,15 +192,14 @@ def lidar_code():
                 cv.imshow("RPLidar", frame)
                 cv.waitKey(1)
 
-            # if count % 2000 == 0:
-            #     frame = 255 * np.zeros((400, 400, 3), dtype=np.uint8)
 
             if count > 4000:
+                frame = 255 * np.zeros((400, 400, 3), dtype=np.uint8)
                 break
 
         lidar.stop()
         lidar.disconnect()
-        sleep(1.5)
+        sleep(2)
 
     #cv.destroyAllWindows()
 
