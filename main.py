@@ -168,35 +168,33 @@ def lidar_code():
     print(lidar.get_info())
     print(lidar.get_lidar_conf())
     print(lidar.get_samplerate())
-    
-
-    scan_generator = lidar.start_scan_express(4)
 
     # Initialize the OpenCV window and frame
     cv.namedWindow("RPLidar", cv.WINDOW_NORMAL)
     cv.resizeWindow("RPLidar", 400, 400)
     frame = 255 * np.zeros((400, 400, 3), dtype=np.uint8)
 
-        # Example code to improve the lidar visualization code
+    while True:
+        scan_generator = lidar.start_scan_express(4)
+        for count, scan in enumerate(scan_generator()):
+            x = int(scan.distance * np.cos(np.radians(scan.angle)))
+            y = int(scan.distance * np.sin(np.radians(scan.angle)))
+            cv.circle(frame, (int(x/10) + 200, int(y/10) + 200),
+                      2, (0, 255, 0), -1)
 
-    for count, scan in enumerate(scan_generator()):
-        x = int(scan.distance * np.cos(np.radians(scan.angle)))
-        y = int(scan.distance * np.sin(np.radians(scan.angle)))
-        if x > 0 and y > 0:
-            cv.circle(frame, (int(x/10) + 200, int(y/10) + 200), 2, (0, 255, 0), -1)
+            # Display the frame
+            if count % 10 == 0:
+                cv.imshow("RPLidar", frame)
+                cv.waitKey(1)
 
+            if count % 2000 == 0:
+                frame = 255 * np.zeros((400, 400, 3), dtype=np.uint8)
 
-        # Display the frame
-        if count % 10 == 0:
-            cv.imshow("RPLidar", frame)
-            cv.waitKey(1)
+            if count % 5000:
+                break
 
-        if count % 2000 == 0:
-            frame = 255 * np.zeros((400, 400, 3), dtype=np.uint8)
+        lidar.stop()
 
-
-    lidar.stop()
-    lidar.set_motor_pwm(0)
     lidar.disconnect()
 
     cv.destroyAllWindows()
