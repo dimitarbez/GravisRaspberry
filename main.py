@@ -192,10 +192,10 @@ def lidar_code():
                 cv.imshow("RPLidar", frame)
                 cv.waitKey(1)
 
-            if count % 3000 == 0:
-                frame = 255 * np.zeros((400, 400, 3), dtype=np.uint8)
+            # if count % 2000 == 0:
+            #     frame = 255 * np.zeros((400, 400, 3), dtype=np.uint8)
 
-            if count > 6000:
+            if count > 4000:
                 break
 
         lidar.stop()
