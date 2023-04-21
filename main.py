@@ -162,9 +162,7 @@ def lidar_code():
 
     sleep(2)
 
-    print(lidar.get_health())
-    print(lidar.get_info())
-    print(lidar.get_samplerate())
+
 
     # Initialize the OpenCV window and frame
     cv.namedWindow("RPLidar", cv.WINDOW_NORMAL)
@@ -175,6 +173,11 @@ def lidar_code():
     while True:
         lidar.connect(port="/dev/ttyUSB1", baudrate=115200, timeout=3)
         lidar.set_motor_pwm(500)
+
+        print(lidar.get_health())
+        print(lidar.get_info())
+        print(lidar.get_samplerate())
+
         scan_generator = lidar.start_scan_express(4)
         sleep(0.5)
         for count, scan in enumerate(scan_generator()):
