@@ -200,7 +200,7 @@ def lidar_code():
 
         lidar.stop()
         lidar.disconnect()
-        sleep(0.5)
+        sleep(1.5)
 
     #cv.destroyAllWindows()
 
