@@ -166,7 +166,6 @@ def lidar_code():
 
     print(lidar.get_health())
     print(lidar.get_info())
-    print(lidar.get_lidar_conf())
     print(lidar.get_samplerate())
 
     # Initialize the OpenCV window and frame
@@ -176,6 +175,7 @@ def lidar_code():
 
     while True:
         scan_generator = lidar.start_scan_express(4)
+        sleep(0.5)
         for count, scan in enumerate(scan_generator()):
             x = int(scan.distance * np.cos(np.radians(scan.angle)))
             y = int(scan.distance * np.sin(np.radians(scan.angle)))
