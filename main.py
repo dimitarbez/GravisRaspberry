@@ -191,7 +191,7 @@ def lidar_code():
         if count % 2000 == 0:
             frame = 255 * np.zeros((400, 400, 3), dtype=np.uint8)
 
-        if count % 5000:
+        if count % 5000 == 0:
             break
 
     lidar.set_motor_pwm(0)
