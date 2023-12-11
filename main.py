@@ -121,13 +121,32 @@ def on_release(key):
         return False
 
 
+def read_serial_data():
+    ser.write('read:battery\n'.encode())
+    battery_voltage = ser.readline().decode().strip()
+
+    ser.write('read:dht\n'.encode())
+    dht_data = ser.readline().decode().strip()
+    humidity, temperature = dht_data.split(',')
+
+    return battery_voltage, humidity, temperature
+
+
 def opencv_code():
     # give camera time to warm up
     sleep(0.1)
 
     for still in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True, resize=camera.resolution):
-      # take the frame as an array, convert it to black and white, and look for facial features
+        # take the frame as an array, convert it to black and white, and look for facial features
         image = still.array
+
+        # Read telemetry data
+        battery_voltage, humidity, temperature = read_serial_data()
+
+        # Display HUD
+        cv.putText(image, f'Battery: {battery_voltage}V', (10, 20), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        cv.putText(image, f'Humidity: {humidity}%', (10, 40), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        cv.putText(image, f'Temp: {temperature}C', (10, 60), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
         # display the resulting image
         cv.imshow("Display", image)
