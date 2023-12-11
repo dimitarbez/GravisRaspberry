@@ -120,30 +120,17 @@ def on_release(key):
 
 
 def read_serial_data():
-    # Read battery voltage
+    print("Reading battery voltage...")
     ser.write('read:battery\n'.encode())
-    sleep(0.5)  # Short delay to allow Arduino to respond
-    battery_voltage = 'N/A'
-    if ser.in_waiting > 0:
-        battery_data = ser.readline().decode().strip()
-        if 'battery:' in battery_data:
-            battery_voltage = battery_data.split(':')[1]
+    sleep(0.5)  # Delay to allow Arduino to respond
+    battery_voltage = ser.readline().decode().strip()
+    print(f"Battery data received: {battery_voltage}")
 
-    # Read DHT data
+    print("Reading DHT data...")
     ser.write('read:dht\n'.encode())
-    sleep(0.5)  # Short delay to allow Arduino to respond
-    humidity, temperature = 'N/A', 'N/A'
-    if ser.in_waiting > 0:
-        dht_data = ser.readline().decode().strip()
-        if 'humidity' in dht_data and 'temperature' in dht_data:
-            try:
-                humidity_data, temperature_data = dht_data.split('|')
-                humidity = humidity_data.split(':')[1].strip('%')
-                temperature = temperature_data.split(':')[1].strip('c')
-            except ValueError:
-                print("Error parsing DHT data")
-
-    return battery_voltage, humidity, temperature
+    sleep(0.5)  # Delay to allow Arduino to respond
+    dht_data = ser.readline().decode().strip()
+    print(f"DHT data received: {dht_data}")
 
 
 def opencv_code():
