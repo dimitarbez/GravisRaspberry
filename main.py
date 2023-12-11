@@ -120,12 +120,22 @@ def on_release(key):
 
 
 def read_serial_data():
+    # Request battery voltage
     ser.write('read:battery\n'.encode())
     battery_voltage = ser.readline().decode().strip()
 
+    # Request DHT data
     ser.write('read:dht\n'.encode())
     dht_data = ser.readline().decode().strip()
-    humidity, temperature = dht_data.split(',')
+
+    # Parse DHT data
+    try:
+        humidity_data, temperature_data = dht_data.split('|')
+        humidity = humidity_data.split(':')[1].strip('%')
+        temperature = temperature_data.split(':')[1].strip('c')
+    except ValueError:
+        humidity, temperature = 'N/A', 'N/A'
+        print("Error parsing DHT data")
 
     return battery_voltage, humidity, temperature
 
