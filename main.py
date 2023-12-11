@@ -120,22 +120,28 @@ def on_release(key):
 
 
 def read_serial_data():
-    # Request battery voltage
+    # Read battery voltage
     ser.write('read:battery\n'.encode())
-    battery_voltage = ser.readline().decode().strip()
+    sleep(0.5)  # Short delay to allow Arduino to respond
+    battery_voltage = 'N/A'
+    if ser.in_waiting > 0:
+        battery_data = ser.readline().decode().strip()
+        if 'battery:' in battery_data:
+            battery_voltage = battery_data.split(':')[1]
 
-    # Request DHT data
+    # Read DHT data
     ser.write('read:dht\n'.encode())
-    dht_data = ser.readline().decode().strip()
-
-    # Parse DHT data
-    try:
-        humidity_data, temperature_data = dht_data.split('|')
-        humidity = humidity_data.split(':')[1].strip('%')
-        temperature = temperature_data.split(':')[1].strip('c')
-    except ValueError:
-        humidity, temperature = 'N/A', 'N/A'
-        print("Error parsing DHT data")
+    sleep(0.5)  # Short delay to allow Arduino to respond
+    humidity, temperature = 'N/A', 'N/A'
+    if ser.in_waiting > 0:
+        dht_data = ser.readline().decode().strip()
+        if 'humidity' in dht_data and 'temperature' in dht_data:
+            try:
+                humidity_data, temperature_data = dht_data.split('|')
+                humidity = humidity_data.split(':')[1].strip('%')
+                temperature = temperature_data.split(':')[1].strip('c')
+            except ValueError:
+                print("Error parsing DHT data")
 
     return battery_voltage, humidity, temperature
 
