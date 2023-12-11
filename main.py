@@ -111,8 +111,6 @@ def on_press(key):
 def on_release(key):
 
     ser.write('motor:stop\n'.encode())
-    data = ser.read(size=3).decode()
-    print(data)
 
     print('{0} released'.format(
         key))
