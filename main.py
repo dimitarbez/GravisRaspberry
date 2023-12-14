@@ -139,7 +139,7 @@ def opencv_code():
         counter += 1
         if counter > 100:
             counter = 0
-            battery_voltage, humidity, temperature = read_serial_data()
+            read_serial_data()
         cv.putText(image, f'Battery: {battery_voltage}V', (10, 20), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         cv.putText(image, f'Humidity: {humidity}%', (10, 40), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         cv.putText(image, f'Temp: {temperature}C', (10, 60), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
