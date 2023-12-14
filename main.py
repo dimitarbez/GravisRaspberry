@@ -218,7 +218,7 @@ def opencv_code():
         image = still.array
 
         # Get frame dimensions
-        height, width = frame.shape[:2]
+        height, width = image.shape[:2]
 
         counter = counter + 1
         # Read telemetry data (You'll need to define the read_serial_data function)
