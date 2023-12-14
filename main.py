@@ -213,6 +213,7 @@ def opencv_code():
     # give camera time to warm up
     sleep(0.1)
 
+    counter = 0
     for still in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True, resize=camera.resolution):
         # take the frame as an array, convert it to black and white, and look for facial features
         image = still.array
