@@ -228,13 +228,13 @@ def opencv_code():
             battery_voltage, humidity, temperature = read_serial_data()
 
         # Display HUD
-        cv.putText(frame, f'Battery: {battery_voltage}V', (10, 20), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-        cv.putText(frame, f'Humidity: {humidity}%', (10, 40), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-        cv.putText(frame, f'Temp: {temperature}C', (10, 60), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        cv.putText(image, f'Battery: {battery_voltage}V', (10, 20), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        cv.putText(image, f'Humidity: {humidity}%', (10, 40), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        cv.putText(image, f'Temp: {temperature}C', (10, 60), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
         # Draw camera FOV
         fov_center = (width - 100, height - 100)  # Position the FOV in the bottom right corner
-        draw_camera_fov(frame, camera_yaw, fov_center)
+        draw_camera_fov(image, camera_yaw, fov_center)
 
         # display the resulting image
         cv.imshow("Display", image)
