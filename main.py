@@ -102,6 +102,8 @@ def draw_camera_fov(frame, yaw, center, fov=60, radius=50, color=(0, 255, 0)):
     cv.line(frame, center, end_point, color, 2)
 
 def read_serial_data():
+    global battery_voltage, humidity, temperature
+
     ser.flushInput()  # Clear the input buffer
     ser.write('read:battery\n'.encode())
     while True:
