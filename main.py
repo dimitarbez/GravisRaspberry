@@ -30,7 +30,7 @@ def on_press(key):
         handle_arrow_key(key)
 
 def handle_alphanumeric_key(key):
-    if key.char in ['w', 'a', 's', 'd', '1', '2', '3', '4', '5', 'p', 'o', 'b', 'n', 'm', 'v', 'x', 'l']:
+    if key.char in ['w', 'a', 's', 'd', '1', '2', '3', '4', '5', 'p', 'o', 'b', 'n', 'm', 'v', 'x', 'l', 'k', 'z', 'c']:
         print(f'alphanumeric key {key.char} pressed')
         commands = {
             'w': 'motor:forward',
