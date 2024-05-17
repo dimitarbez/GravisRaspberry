@@ -48,6 +48,7 @@ def handle_alphanumeric_key(key):
             'n': 'lights:animation:blink_right',
             'm': 'lights:animation:police',
             'v': 'lights:animation:blink_all',
+            'c': 'lights:animation:wave'
             'x': 'lights:animation:off',
             'l': toggle_lights
         }
