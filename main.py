@@ -35,8 +35,10 @@ def handle_alphanumeric_key(key):
         commands = {
             'w': 'motor:forward',
             'a': 'motor:left',
+            'z': 'motor:hard_left',
             's': 'motor:backward',
             'd': 'motor:right',
+            'c': 'motor:hard_right',
             '1': 'motor:speed:50',
             '2': 'motor:speed:100',
             '3': 'motor:speed:150',
@@ -48,7 +50,7 @@ def handle_alphanumeric_key(key):
             'n': 'lights:animation:blink_right',
             'm': 'lights:animation:police',
             'v': 'lights:animation:blink_all',
-            'c': 'lights:animation:wave'
+            'k': 'lights:animation:wave'
             'x': 'lights:animation:off',
             'l': toggle_lights
         }
