@@ -9,9 +9,6 @@ from pyrplidar import PyRPlidar
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 
-# Haar cascade file for face detection
-cascPath = "./haarcascades/haarcascade_frontalface_default.xml"
-faceCascade = cv.CascadeClassifier(cascPath)
 
 # Global variables
 global battery_voltage, humidity, temperature, camera_yaw, camera_pitch, is_light_on
@@ -67,7 +64,7 @@ def toggle_lights():
         ser.write('lights:back:0:0:0\n'.encode())
     else:
         ser.write('lights:front:255:255:255\n'.encode())
-        ser.write('lights:back:255:255:0\n'.encode())
+        ser.write('lights:back:255:0:0\n'.encode())
     is_light_on = not is_light_on
 
 def handle_arrow_key(key):
@@ -189,7 +186,7 @@ def lidar_code():
 if __name__ == "__main__":
     thread_robot_control = threading.Thread(target=robot_drive_code)
     thread_opencv = threading.Thread(target=opencv_code)
-    thread_lidar = threading.Thread(target=lidar_code)
-    thread_lidar.start()
+    # thread_lidar = threading.Thread(target=lidar_code)
+    # thread_lidar.start()
     thread_opencv.start()
     thread_robot_control.start()
